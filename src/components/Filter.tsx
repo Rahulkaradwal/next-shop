@@ -3,11 +3,18 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Filter = () => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const { replace } = useRouter();
+  const useParams = useSearchParams();
+  const pathname = usePathname();
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    const params = new URLSearchParams(useParams);
+    params.set(name, value);
 
-  const handleFilterChange = () => {};
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <div className="mt-12 flex justify-between">
