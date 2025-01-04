@@ -2,7 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-function Product() {
+interface Props {
+  url: string;
+}
+
+function Product({ url }: Props) {
   return (
     <Link
       href={"/"}
@@ -11,7 +15,7 @@ function Product() {
     >
       <div className="relative w-full h-80">
         <Image
-          src="https://images.pexels.com/photos/3907507/pexels-photo-3907507.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src={url}
           alt=""
           fill
           sizes="25vw"

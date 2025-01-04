@@ -1,7 +1,10 @@
 import Filter from "@/components/Filter";
+import Product from "@/components/Product";
 import ProductList from "@/components/ProductList";
 import Image from "next/image";
-import { Suspense } from "react";
+
+const url =
+  "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 
 const ListPage = async ({ searchParams }: { searchParams: any }) => {
   // const wixClient = await wixClientServer();
@@ -26,7 +29,8 @@ const ListPage = async ({ searchParams }: { searchParams: any }) => {
       {/* FILTER */}
       <Filter />
       {/* PRODUCTS */}
-      <h1 className="mt-12 text-xl font-semibold">For You!</h1>
+      <h1 className="mt-12 text-xl font-semibold mb-12">For You!</h1>
+      <Product url={url} />
     </div>
   );
 };
