@@ -1,8 +1,8 @@
 import { createClient, OAuthStrategy } from "@wix/sdk";
-import { products } from "@wix/stores";
+import { products, collections } from "@wix/stores";
 import { cookies } from "next/headers";
 
-export const wixClientServer = () => {
+export const wixClientServer = async () => {
   const accessToken = cookies().get("accessToken")?.value || "";
   const refreshToken = (() => {
     try {
@@ -22,6 +22,7 @@ export const wixClientServer = () => {
     return createClient({
       modules: {
         products,
+        collections,
       },
       auth: OAuthStrategy({
         clientId: process.env.WIX_AUTH_CLIENT_ID!, // Use server-side env variable

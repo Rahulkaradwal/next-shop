@@ -15,7 +15,9 @@ const HomePage = async () => {
           limit={4}
         />
       </Suspense>
-      <CategoryList />
+      <Suspense fallback={<Spinner />}>
+        <CategoryList />
+      </Suspense>
       <NewProductsList />
     </div>
   );

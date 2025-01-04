@@ -10,7 +10,7 @@ interface Props {
   limit: number;
 }
 async function ProductList({ categoryId, limit }: Props) {
-  const wixClient = wixClientServer();
+  const wixClient = await wixClientServer();
   const { items: featuredProducts } = await wixClient.products
     .queryProducts()
     .eq("collectionIds", categoryId)
