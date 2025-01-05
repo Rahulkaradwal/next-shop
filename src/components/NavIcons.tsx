@@ -1,13 +1,40 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import CartModel from "./CartModel";
 import NotificationIcon from "./NotificationIcon";
+import useWixClient from "@/hooks/useWixClient";
+import { usePathname, useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 function NavIcons() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const pathName = usePathname();
+
+  const router = useRouter();
+  const wixClient = useWixClient();
+  const isLoggedIn = wixClient.auth.loggedIn();
+
+  const handleProfile = () => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      setIsProfileOpen((pre) => !pre);
+    }
+  };
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    Cookies.remove("refreshToken");
+    const { logoutUrl } = await wixClient.auth.logout(window.location.href);
+    setIsLoading(false);
+    setIsProfileOpen(false);
+    router.push(logoutUrl);
+  };
+
   return (
     <div className="flex gap-4 xl:gap-6 items-center relative ">
       <Image
@@ -17,14 +44,17 @@ function NavIcons() {
         height={22}
         className="cursor-pointer"
         onClick={() => {
-          setIsProfileOpen((pre) => !pre);
-          setIsCartOpen(false);
+          // setIsProfileOpen((pre) => !pre);
+          // setIsCartOpen(false);
+          handleProfile();
         }}
       />
       {isProfileOpen && (
-        <div className="absolute top-12 bg-gray-100 p-4 left-0 text-sm rounded-md shadow-md z-20 ">
+        <div className="absolute top-12 bg-white w-32 px-4 py-2 left-0 text-sm rounded-md shadow-md z-20 ">
           <Link href="/">Profile</Link>
-          <div>Logout</div>
+          <div className="cursor-pointer mt-2" onClick={handleLogout}>
+            {isLoading ? "Logging out..." : "Logout"}
+          </div>
         </div>
       )}
       <Image
