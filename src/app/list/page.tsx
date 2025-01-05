@@ -2,6 +2,8 @@ import Filter from "@/components/Filter";
 import Image from "next/image";
 import { wixClientServer } from "@/lib/wixClientServer";
 import ProductList from "@/components/ProductList";
+import Pagination from "@/components/Pagination";
+import { products } from "@wix/stores";
 
 const ListPage = async ({ searchParams }: { searchParams: any }) => {
   const wixClient = await wixClientServer();
@@ -30,11 +32,16 @@ const ListPage = async ({ searchParams }: { searchParams: any }) => {
       {/* FILTER */}
       <Filter />
       {/* PRODUCTS */}
-      <h1 className="mt-12 text-xl font-semibold mb-12">For You!</h1>
-      <div className="-px-4 md:-px-8  lg:-px-16 xl:-px-32 2xl:-px-64 -mt-12 ">
+      {/* <div className="px-4 md:px-8   lg:px-16 xl:px-32 2xl:px-64 mt-24 "> */}
+
+      <h1 className="mt-12 text-xl  font-semibold mb-12 ">
+        All Products For You!
+      </h1>
+      <div className=" mb-12  ">
         <ProductList
           categoryId={collection?._id! || "00000000-000000-000000-000000000001"}
           searchParams={searchParams}
+          style={true}
         />
       </div>
     </div>
