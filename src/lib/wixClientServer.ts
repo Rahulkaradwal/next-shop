@@ -15,7 +15,6 @@ export const wixClientServer = async () => {
   })();
 
   if (!refreshToken) {
-    console.error("Missing or invalid refresh token");
   }
 
   try {

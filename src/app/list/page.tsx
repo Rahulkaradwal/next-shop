@@ -1,5 +1,4 @@
 import Filter from "@/components/Filter";
-import Product from "@/components/Product";
 import Image from "next/image";
 import { wixClientServer } from "@/lib/wixClientServer";
 import ProductList from "@/components/ProductList";
@@ -33,7 +32,10 @@ const ListPage = async ({ searchParams }: { searchParams: any }) => {
       {/* PRODUCTS */}
       <h1 className="mt-12 text-xl font-semibold mb-12">For You!</h1>
       <div className="-px-4 md:-px-8  lg:-px-16 xl:-px-32 2xl:-px-64 -mt-12 ">
-        <ProductList categoryId={collection?._id!} />
+        <ProductList
+          categoryId={collection?._id! || "00000000-000000-000000-000000000001"}
+          searchParams={searchParams}
+        />
       </div>
     </div>
   );

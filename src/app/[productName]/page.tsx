@@ -3,6 +3,7 @@ import AdditionalInfo from "@/components/AdditionalInfo";
 import CustomizeProducts from "@/components/CustomizeProducts";
 import ProductImages from "@/components/ProductImages";
 import { wixClientServer } from "@/lib/wixClientServer";
+import { notFound } from "next/navigation";
 
 type Image = {
   url: string;
@@ -15,9 +16,12 @@ const ProductPage = async ({ params }: { params: { productName: string } }) => {
 
   const wixClient = await wixClientServer();
 
-  const { product } = (await wixClient.products.getProduct(id)) ?? [];
+  const { product } = await wixClient.products.getProduct(id);
 
-  // const images = product?.media?.items.map((item) => item.image);
+  if (!product) {
+    return notFound();
+  }
+
   const images =
     product?.media?.items
       ?.map((item) => item.image)
@@ -35,22 +39,37 @@ const ProductPage = async ({ params }: { params: { productName: string } }) => {
         <p className="text-gray-500">{product?.description}</p>
         <div className="h-[2px] bg-gray-100" />
 
-        <div className="flex items-center gap-4">
-          <h3 className="text-xl text-gray-500 line-through">
-            {product?.price?.currency} {product?.price?.discountedPrice}
-          </h3>
-          <h2 className="font-medium text-2xl">
-            {product?.price?.currency} {product?.price?.price}
-          </h2>
-        </div>
+        {product.price?.price === product.price?.discountedPrice ? (
+          <div className="flex items-center gap-4">
+            <h2 className="font-medium text-2xl">
+              {product?.price?.currency} {product?.price?.discountedPrice}
+            </h2>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <h3 className="text-xl text-gray-500 line-through">
+              {product?.price?.currency} {product?.price?.price}
+            </h3>
+            <h2 className="font-medium text-2xl">
+              {product?.price?.currency} {product?.price?.discountedPrice}
+            </h2>
+          </div>
+        )}
 
         <div className="h-[2px] bg-gray-100" />
-        <CustomizeProducts />
-        <Add
-          productId={product?._id!}
-          variantId={product?.variants[0]?._id!}
-          stockNumber={product?.stock?.quantity!}
-        />
+        {product.variants && product.productOptions ? (
+          <CustomizeProducts
+            productId={product._id!}
+            variants={product.variants}
+            productOptions={product.productOptions}
+          />
+        ) : (
+          <Add
+            productId={product._id!}
+            variantId="00000000-0000-0000-0000-000000000000"
+            stockNumber={product.stock?.quantity || 0}
+          />
+        )}
 
         <div className="h-[2px] bg-gray-100" />
         {product?.additionalInfoSections &&

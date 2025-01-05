@@ -7,6 +7,7 @@ interface Props {
   categoryId: string;
   limit?: number;
   title?: string;
+  searchParams?: any;
 }
 const MAX_ITEMS = 20;
 async function ProductList({ categoryId, limit, title }: Props) {
