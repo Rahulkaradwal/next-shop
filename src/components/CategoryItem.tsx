@@ -10,7 +10,7 @@ interface Props {
 function CategoryItem({ category }: Props) {
   return (
     <Link
-      href="/list?cat=test"
+      href={`/list?cat=${category.slug}`}
       className="w-full flex-shrink-0  sm:w-[45%] lg:w-[19%]  "
     >
       <div className="relative bg-slate-100 w-full h-80 rounded-md">

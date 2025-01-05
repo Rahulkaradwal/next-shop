@@ -1,13 +1,15 @@
 import Filter from "@/components/Filter";
 import Product from "@/components/Product";
-import ProductList from "@/components/ProductList";
 import Image from "next/image";
-
-const url =
-  "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+import { wixClientServer } from "@/lib/wixClientServer";
+import ProductList from "@/components/ProductList";
 
 const ListPage = async ({ searchParams }: { searchParams: any }) => {
-  // const wixClient = await wixClientServer();
+  const wixClient = await wixClientServer();
+
+  const { collection } = await wixClient.collections.getCollectionBySlug(
+    searchParams.cat || "all-products"
+  );
 
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 relative">
@@ -30,7 +32,9 @@ const ListPage = async ({ searchParams }: { searchParams: any }) => {
       <Filter />
       {/* PRODUCTS */}
       <h1 className="mt-12 text-xl font-semibold mb-12">For You!</h1>
-      <Product url={url} />
+      <div className="-px-4 md:-px-8  lg:-px-16 xl:-px-32 2xl:-px-64 -mt-12 ">
+        <ProductList categoryId={collection?._id!} />
+      </div>
     </div>
   );
 };

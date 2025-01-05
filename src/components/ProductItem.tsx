@@ -11,7 +11,7 @@ interface Props {
 function ProductItem({ product }: Props) {
   return (
     <Link
-      href="/"
+      href={`${product._id}`}
       className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]"
       key={product._id}
     >

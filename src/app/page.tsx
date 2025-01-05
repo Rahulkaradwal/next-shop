@@ -1,5 +1,4 @@
 import CategoryList from "@/components/CategoryList";
-import NewProductsList from "@/components/NewProductsList";
 import ProductList from "@/components/ProductList";
 import Slider from "@/components/Slider";
 import Spinner from "@/components/Spinner";
@@ -11,6 +10,7 @@ const HomePage = async () => {
       <Slider />
       <Suspense fallback={<Spinner />}>
         <ProductList
+          title="Featured Products"
           categoryId={process.env.WIX_FEATURED_CATEGORY_ID!}
           limit={4}
         />
@@ -18,7 +18,13 @@ const HomePage = async () => {
       <Suspense fallback={<Spinner />}>
         <CategoryList />
       </Suspense>
-      <NewProductsList />
+      <Suspense fallback={<Spinner />}>
+        <ProductList
+          title="New Arrivals"
+          limit={4}
+          categoryId={process.env.WIX_NEW_PRODUCT_CATEGORY_ID!}
+        />
+      </Suspense>
     </div>
   );
 };
